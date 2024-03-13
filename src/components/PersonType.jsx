@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 export default function PersonType(props) {
+  const [NumberOf, setNumberOf] = useState(0);
+  const handleIncrement = () => {
+    setNumberOf(NumberOf + 1);
+  };
+  const handleDecrement = () => {
+    setNumberOf(NumberOf - 1);
+    if (NumberOf <= 0) {
+      setNumberOf(0);
+    }
+  };
   return (
     <CardContainer>
       <StyledText>{props.type}</StyledText>
-      <Button>+</Button>
-      <Button>-</Button>
+      <Button onClick={handleDecrement}>-</Button>
+      <span>{NumberOf}</span>
+      <Button onClick={handleIncrement}>+</Button>
     </CardContainer>
   );
 }

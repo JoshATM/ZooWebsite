@@ -8,8 +8,6 @@ export default function BuyATicket() {
     <>
       <p>Buy a Ticket</p>
       <PickADate />
-      <p>Type:</p>
-      <PersonType type="Adult" />
     </>
   );
 }

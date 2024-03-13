@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import PersonType from "./PersonType";
 
 export default function PickADate() {
   const [selectedDay, setSelectedDay] = useState(null);
@@ -32,6 +33,7 @@ export default function PickADate() {
                 key={day}
                 onClick={DaySelected}
                 disabled={day < GetDay}
+                // disabled={day < GetDay && CurrentMonthYear < GetMonthYear}
                 selected={selectedDay === day}
                 disabledOpacity={0.5}
                 disabledCursor="not-allowed"
@@ -43,9 +45,16 @@ export default function PickADate() {
         </CalenderCardContainer>
         <StyledTextContainer>
           {selectedDay != null ? (
-            <p>
-              Book a day for {selectedDay} {GetMonthYear} to visit the zoo
-            </p>
+            <>
+              <p>
+                Book a day for {selectedDay} {GetMonthYear} to visit the zoo
+              </p>
+              <PersonTypeContainer>
+                <PersonType type="Adult" />
+                <PersonType type="Child" />
+                <PersonType type="Senior" />
+              </PersonTypeContainer>
+            </>
           ) : (
             <p>Please select a day to visit the zoo</p>
           )}
@@ -72,7 +81,7 @@ const CalenderCardContainer = styled.div`
   padding: 1rem;
   text-align: center;
   width: 400px;
-  max-height: 400px;
+  max-height: 250px;
 `;
 
 const Days = styled.button`
@@ -90,7 +99,7 @@ const Days = styled.button`
   height: 40px;
   border: none;
   &:hover {
-    background: #00681c;
+    background: #00bf33;
     color: #fff;
   }
 `;
@@ -118,12 +127,20 @@ const Title = styled.h2`
 
 const StyledTextContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   text-align: center;
   margin-top: 1rem;
-
+  width: 50%;
+  justify-content: center;
   p {
     font-size: 1.5rem;
     margin: 0;
     padding: 0;
   }
+`;
+
+const PersonTypeContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
 `;
