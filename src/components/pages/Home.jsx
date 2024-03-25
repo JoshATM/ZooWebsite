@@ -13,10 +13,10 @@ export default function Home() {
   const videoRef = useRef();
 
   const handleVideoEnd = () => {
-    setIsVisible(false); // Hide the video before changing the source
+    setIsVisible(false);
     setTimeout(() => {
       setCurrentVideoIndex((currentVideoIndex + 1) % videoSources.length);
-    }, 500); // Delay changing the source until the fade-out effect completes
+    }, 500);
   };
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function Home() {
         autoPlay
         muted
         onEnded={handleVideoEnd}
-        visible={isVisible ? 1 : 0} // Pass visibility state to the styled component
+        visible={isVisible ? 1 : 0}
       >
         <source src={videoSources[currentVideoIndex]} type="video/mp4" />
       </StyledVideoBanner>
