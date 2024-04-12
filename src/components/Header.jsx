@@ -9,6 +9,7 @@ export default function Header() {
       <h1>ZOO</h1>
       <button onClick={() => navigate("/")}>Home</button>
       <button onClick={() => navigate("/tickets")}>Buy a Ticket</button>
+      <button onClick={() => navigate("/dashboard")}>Dashboard</button>
     </HeaderContainer>
   );
 }

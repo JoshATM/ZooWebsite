@@ -6,6 +6,7 @@ import GlobalComponents from "./components/GlobalComponents";
 import Home from "./components/pages/Home";
 import BuyATicket from "./components/pages/BuyATicket";
 import PageNotFound from "./components/pages/PageNotFound";
+import Dashboard from "./components/pages/Dashboard";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -16,6 +17,7 @@ const App = () => {
       children: [
         { path: "", element: <Home /> },
         { path: "tickets", element: <BuyATicket /> },
+        { path: "dashboard", element: <Dashboard /> },
       ],
     },
   ]);

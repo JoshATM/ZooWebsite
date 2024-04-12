@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Button from "./Button";
 
 export default function PickADate() {
+  // Declare Variables
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [seniors, setSeniors] = useState(0);
@@ -10,114 +11,62 @@ export default function PickADate() {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
-  const handleAdultsIncrement = () => {
-    setAdults(adults + 1);
+  const prevMonth = currentMonth;
+
+  // Increment function
+  const handleIncrement = (setter) => {
+    setter((prevValue) => prevValue + 1); // Increment by 1
   };
-  const handleAdultsDecrement = () => {
-    setAdults(adults - 1);
-    if (adults <= 0) {
-      setAdults(0);
+
+  // Decrement function
+  const handleDecrement = (setter) => {
+    setter((prevValue) => Math.max(prevValue - 1, 0)); // Decrement by 1 and if previus value is 0 or less, return 0
+  };
+
+  // Previous Month function
+  const handlePreviousMonth = () => {
+    if (
+      currentMonth === new Date().getMonth() && // If current month is the same as the current month
+      currentYear === new Date().getFullYear() // If current year is the same as the current year
+    ) {
+      return; // Return nothing / null
     }
+    setCurrentMonth((prevMonth) => (prevMonth === 0 ? 11 : prevMonth - 1)); // If previous month is 0 / Jan, return 11 / Dec
+    setCurrentYear((prevYear) => (prevMonth === 0 ? prevYear - 1 : prevYear)); // If previous month e.g. 2024, return previous year e.g. 2023
   };
 
-  const handleChildrenIncrement = () => {
-    setChildren(children + 1);
-  };
-  const handleChildrenDecrement = () => {
-    setChildren(children - 1);
-    if (children <= 0) {
-      setChildren(0);
-    }
+  // Next Month function
+  const handleNextMonth = () => {
+    setCurrentMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1)); // If previous month is 11 / Dec, return 0 / Jan
+    setCurrentYear((prevYear) => (prevMonth === 11 ? prevYear + 1 : prevYear)); // If previous month e.g. 2023, return next year e.g. 2024
   };
 
-  const handleSeniorsIncrement = () => {
-    setSeniors(seniors + 1);
-  };
-  const handleSeniorsDecrement = () => {
-    setSeniors(seniors - 1);
-    if (seniors <= 0) {
-      setSeniors(0);
-    }
+  // Disable any days before today
+  const isDateDisabled = (day) => {
+    const today = new Date(); // Get today's date
+    const selectedDate = new Date(currentYear, currentMonth, day); // Get selected date
+    return selectedDate < today; // Return true if selected date is before today which will disable the day button
   };
 
-  const GetDay = new Date().toLocaleDateString("en-UK", {
-    day: "numeric",
-  });
-  const GetMonthYear = new Date(currentYear, currentMonth).toLocaleDateString(
-    "en-UK",
-    {
-      month: "long",
-      year: "numeric",
-    }
-  );
-
-  const getDaysInMonth = (month, year) => {
-    return new Date(year, month + 1, 0).getDate();
+  // Select a day function
+  const handleDaySelect = (day) => {
+    setSelectedDay(day);
   };
 
+  // Create an array of days in the specific month
   const daysArray = Array.from(
-    { length: getDaysInMonth(currentMonth, currentYear) },
+    { length: new Date(currentYear, currentMonth + 1, 0).getDate() },
     (_, index) => index + 1
   );
 
-  const DaySelected = (e) => {
-    setSelectedDay(e.target.textContent);
-  };
-
-  const Submit = () => {
-    let message = `You have selected ${selectedDay} ${GetMonthYear} to visit the zoo.`;
-    if (adults > 0 || children > 0 || seniors > 0) {
-      message += ` You have selected ${
-        adults === 0 ? "" : adults + " adult(s)"
-      }${adults > 0 && (children > 0 || seniors > 0) ? " and " : ""}${
-        children === 0 ? "" : children + " kid(s)"
-      }${children > 0 && seniors > 0 ? " and " : ""}${
-        seniors === 0 ? "" : seniors + " senior(s)"
-      } to visit the zoo.`;
-    }
-    message += " Enjoy your day!";
-    alert(message);
-  };
-
-  const handlePreviousMonth = () => {
-    if (
-      currentMonth === new Date().getMonth() &&
-      currentYear === new Date().getFullYear()
-    ) {
-      return; // Do nothing if current month and year is the same as the current month and year
-    }
-    setCurrentMonth((prevMonth) => {
-      if (prevMonth === 0) {
-        setCurrentYear((prevYear) => prevYear - 1);
-        return 11;
-      } else {
-        return prevMonth - 1;
-      }
-    });
-  };
-
-  const handleNextMonth = () => {
-    setCurrentMonth((prevMonth) => {
-      if (prevMonth === 11) {
-        setCurrentYear((prevYear) => prevYear + 1);
-        return 0;
-      } else {
-        return prevMonth + 1;
-      }
-    });
-  };
-
-  const isDateDisabled = (day) => {
-    const today = new Date();
-    const selectedDate = new Date(currentYear, currentMonth, day);
-    return selectedDate < today;
-  };
+  const handleSubmit = () => {};
 
   return (
     <Container>
       <CalenderContainer>
         <CalenderCardContainer>
           <Title>
+            {/* Previous Month Button */}
             <button
               onClick={handlePreviousMonth}
               disabled={
@@ -127,18 +76,23 @@ export default function PickADate() {
             >
               {"<"}
             </button>
-            {GetMonthYear}
+            {/* Current Month and Year for Calendar Title */}
+            {new Date(currentYear, currentMonth).toLocaleDateString("en-UK", {
+              month: "long",
+              year: "numeric",
+            })}
+
+            {/* Next Month Button */}
             <button onClick={handleNextMonth}>{">"}</button>
           </Title>
           <CalenderDays>
+            {/* Button for the days on Calendar */}
             {daysArray.map((day) => (
               <Days
                 key={day}
-                onClick={DaySelected}
+                onClick={() => handleDaySelect(day)}
                 disabled={isDateDisabled(day)}
                 selected={selectedDay === day}
-                disabledOpacity={0.5}
-                disabledCursor="not-allowed"
               >
                 {day}
               </Days>
@@ -150,46 +104,49 @@ export default function PickADate() {
         {selectedDay != null ? (
           <>
             <p>
-              Book a day for {selectedDay} {GetMonthYear} to visit the zoo
+              Book a day for {selectedDay}{" "}
+              {new Date(currentYear, currentMonth).toLocaleDateString("en-UK", {
+                month: "long",
+                year: "numeric",
+              })}{" "}
+              to visit the zoo
             </p>
             <PersonTypeContainer>
               <PersonTypeCardContainer>
                 <PersonTypeStyledText>Adult</PersonTypeStyledText>
-                <PersonTypeButton onClick={handleAdultsDecrement}>
+                <PersonTypeButton onClick={() => handleDecrement(setAdults)}>
                   -
                 </PersonTypeButton>
                 <span>{adults}</span>
-                <PersonTypeButton onClick={handleAdultsIncrement}>
+                <PersonTypeButton onClick={() => handleIncrement(setAdults)}>
                   +
                 </PersonTypeButton>
               </PersonTypeCardContainer>
               <PersonTypeCardContainer>
                 <PersonTypeStyledText>Children</PersonTypeStyledText>
-                <PersonTypeButton onClick={handleChildrenDecrement}>
+                <PersonTypeButton onClick={() => handleDecrement(setChildren)}>
                   -
                 </PersonTypeButton>
                 <span>{children}</span>
-                <PersonTypeButton onClick={handleChildrenIncrement}>
+                <PersonTypeButton onClick={() => handleIncrement(setChildren)}>
                   +
                 </PersonTypeButton>
               </PersonTypeCardContainer>
               <PersonTypeCardContainer>
                 <PersonTypeStyledText>Seniors</PersonTypeStyledText>
-                <PersonTypeButton onClick={handleSeniorsDecrement}>
+                <PersonTypeButton onClick={() => handleDecrement(setSeniors)}>
                   -
                 </PersonTypeButton>
                 <span>{seniors}</span>
-                <PersonTypeButton onClick={handleSeniorsIncrement}>
+                <PersonTypeButton onClick={() => handleIncrement(setSeniors)}>
                   +
                 </PersonTypeButton>
               </PersonTypeCardContainer>
-              <Button onClick={Submit} text="Submit" />
+              <Button onClick={handleSubmit} text="Submit" />
             </PersonTypeContainer>
           </>
         ) : (
-          <>
-            <p>Please select a day to visit the zoo</p>
-          </>
+          <p>Please select a day to visit the zoo</p>
         )}
       </StyledTextContainer>
     </Container>
@@ -227,17 +184,17 @@ const Days = styled.button`
   align-items: center;
   font-size: 1.5rem;
   transition: 0.3s ease;
-  opacity: ${(props) => (props.disabled ? props.disabledOpacity : 1)};
-  cursor: ${(props) => (props.disabled ? props.disabledCursor : "pointer")};
-  background: green;
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  background: ${(props) => (props.selected ? "green" : "#fff")};
   border-radius: 5px;
-  color: #fff;
+  color: ${(props) => (props.selected ? "#fff" : "#000")};
   width: 40px;
   height: 40px;
   border: none;
   &:hover {
-    background: #00bf33;
-    color: #fff;
+    background: ${(props) => (props.disabled ? "#fff" : "#00bf33")};
+    color: ${(props) => (props.disabled ? "#000" : "#fff")};
   }
 `;
 
