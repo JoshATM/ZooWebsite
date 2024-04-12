@@ -67,23 +67,46 @@ export default function PickADate() {
         <CalenderCardContainer>
           <Title>
             {/* Previous Month Button */}
-            <button
+            <MonthPicker
               onClick={handlePreviousMonth}
               disabled={
                 currentMonth === new Date().getMonth() &&
                 currentYear === new Date().getFullYear()
               }
             >
-              {"<"}
-            </button>
-            {/* Current Month and Year for Calendar Title */}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+                {/* Add fill and disable the cursor if they try and go back further then the current month (as you can't book a ticket in the past) */}
+                <path
+                  d="M10 20A10 10 0 1 0 0 10a10 10 0 0 0 10 10zm1.289-15.7 1.422 1.4-4.3 4.344 4.289 4.245-1.4 1.422-5.714-5.648"
+                  fill={
+                    currentMonth === new Date().getMonth() &&
+                    currentYear === new Date().getFullYear()
+                      ? "#ccc"
+                      : "white"
+                  }
+                  cursor={
+                    currentMonth === new Date().getMonth() &&
+                    currentYear === new Date().getFullYear()
+                      ? "not-allowed"
+                      : "pointer"
+                  }
+                />
+              </svg>
+            </MonthPicker>
+            {/* Title */}
             {new Date(currentYear, currentMonth).toLocaleDateString("en-UK", {
               month: "long",
               year: "numeric",
             })}
-
             {/* Next Month Button */}
-            <button onClick={handleNextMonth}>{">"}</button>
+            <MonthPicker onClick={handleNextMonth}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+                <path
+                  d="M10 20A10 10 0 1 0 0 10a10 10 0 0 0 10 10zM8.711 4.3l5.7 5.766L8.7 15.711l-1.4-1.422 4.289-4.242-4.3-4.347"
+                  fill="white"
+                />
+              </svg>
+            </MonthPicker>
           </Title>
           <CalenderDays>
             {/* Button for the days on Calendar */}
@@ -174,8 +197,8 @@ const CalenderCardContainer = styled.div`
   margin: 1rem;
   padding: 1rem;
   text-align: center;
-  width: 400px;
-  max-height: 250px;
+  width: 600px;
+  max-height: 600px;
 `;
 
 const Days = styled.button`
@@ -189,8 +212,8 @@ const Days = styled.button`
   background: ${(props) => (props.selected ? "green" : "#fff")};
   border-radius: 5px;
   color: ${(props) => (props.selected ? "#fff" : "#000")};
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
   border: none;
   &:hover {
     background: ${(props) => (props.disabled ? "#fff" : "#00bf33")};
@@ -208,17 +231,35 @@ const CalenderDays = styled.div`
   gap: 10px;
 `;
 
+const MonthPicker = styled.button`
+  background: #00bf33;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  transition: 0.3s ease;
+  &:hover {
+    background: #00681c;
+  }
+`;
+
 const Title = styled.h2`
   margin: 0;
   padding: 0;
   font-size: 1.5rem;
   width: 100%;
   text-align: center;
-  border-bottom: 1px solid #000;
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
+  color: #fff;
+  background: #00bf33;
+  border-radius: 5px;
+  padding: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 const StyledTextContainer = styled.div`
