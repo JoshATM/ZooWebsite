@@ -210,7 +210,7 @@ const Days = styled.button`
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   background: ${(props) => (props.selected ? "green" : "#fff")};
-  border-radius: 5px;
+  border-radius: 15px;
   color: ${(props) => (props.selected ? "#fff" : "#000")};
   width: 70px;
   height: 70px;
