@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import Flamingos from "../../assets/Flamingos.mp4";
-import Gazell from "../../assets/Gazell.mp4";
-import Monkey from "../../assets/Monkey.mp4";
-import Penguin from "../../assets/Penguin.mp4";
-import Waterfall from "../../assets/Waterfall.mp4";
+import Flamingos from "../../assets/videos/Flamingos.mp4";
+import Gazell from "../../assets/videos/Gazell.mp4";
+import Monkey from "../../assets/videos/Monkey.mp4";
+import Penguin from "../../assets/videos/Penguin.mp4";
+import Waterfall from "../../assets/videos/Waterfall.mp4";
 
 export default function Home() {
   const videoSources = [Flamingos, Gazell, Monkey, Penguin, Waterfall];

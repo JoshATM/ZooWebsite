@@ -7,6 +7,7 @@ import Home from "./components/pages/Home";
 import BuyATicket from "./components/pages/BuyATicket";
 import PageNotFound from "./components/pages/PageNotFound";
 import Dashboard from "./components/pages/Dashboard";
+import Materials from "./components/pages/Materials";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -18,6 +19,7 @@ const App = () => {
         { path: "", element: <Home /> },
         { path: "tickets", element: <BuyATicket /> },
         { path: "dashboard", element: <Dashboard /> },
+        { path: "materials", element: <Materials /> },
       ],
     },
   ]);
