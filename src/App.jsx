@@ -8,6 +8,7 @@ import BuyATicket from "./components/pages/BuyATicket";
 import PageNotFound from "./components/pages/PageNotFound";
 import Dashboard from "./components/pages/Dashboard";
 import Materials from "./components/pages/Materials";
+import Idk from "./components/pages/Idk";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -20,6 +21,7 @@ const App = () => {
         { path: "tickets", element: <BuyATicket /> },
         { path: "dashboard", element: <Dashboard /> },
         { path: "materials", element: <Materials /> },
+        { path: "idk", element: <Idk /> },
       ],
     },
   ]);

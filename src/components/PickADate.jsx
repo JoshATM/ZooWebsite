@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "./Button";
+import axios from "axios";
 
 export default function PickADate() {
   // Declare Variables
@@ -59,7 +60,32 @@ export default function PickADate() {
     (_, index) => index + 1
   );
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    // Create an object with the data to be sent to the server
+    const data = {
+      adults,
+      children,
+      seniors,
+      selectedDay,
+      currentMonth,
+      currentYear,
+    };
+
+    // Make a POST request to the server
+    axios
+      .post("http://localhost:5000/addBooking", data)
+      .then((response) => {
+        console.log("Booking added successfully");
+      })
+      .catch((error) => {
+        console.error("Error adding booking: " + error);
+      });
+  };
+
+  const ChildrenTickets = children * 21;
+  const AdultTickets = adults * 33;
+  const SeniorTickets = seniors * 33;
+  const TotalPrice = ChildrenTickets + AdultTickets + SeniorTickets;
 
   return (
     <Container>
@@ -136,7 +162,7 @@ export default function PickADate() {
             </p>
             <PersonTypeContainer>
               <PersonTypeCardContainer>
-                <PersonTypeStyledText>Adult</PersonTypeStyledText>
+                <PersonTypeStyledText>Adult: £33</PersonTypeStyledText>
                 <PersonTypeButton onClick={() => handleDecrement(setAdults)}>
                   -
                 </PersonTypeButton>
@@ -146,7 +172,7 @@ export default function PickADate() {
                 </PersonTypeButton>
               </PersonTypeCardContainer>
               <PersonTypeCardContainer>
-                <PersonTypeStyledText>Children</PersonTypeStyledText>
+                <PersonTypeStyledText>Children: £21</PersonTypeStyledText>
                 <PersonTypeButton onClick={() => handleDecrement(setChildren)}>
                   -
                 </PersonTypeButton>
@@ -156,7 +182,7 @@ export default function PickADate() {
                 </PersonTypeButton>
               </PersonTypeCardContainer>
               <PersonTypeCardContainer>
-                <PersonTypeStyledText>Seniors</PersonTypeStyledText>
+                <PersonTypeStyledText>Seniors: £31</PersonTypeStyledText>
                 <PersonTypeButton onClick={() => handleDecrement(setSeniors)}>
                   -
                 </PersonTypeButton>
@@ -165,6 +191,9 @@ export default function PickADate() {
                   +
                 </PersonTypeButton>
               </PersonTypeCardContainer>
+              <PersonTypeStyledText>
+                Total Price: £{TotalPrice}
+              </PersonTypeStyledText>
               <Button onClick={handleSubmit} text="Submit" />
             </PersonTypeContainer>
           </>
