@@ -9,6 +9,7 @@ import PageNotFound from "./components/pages/PageNotFound";
 import Dashboard from "./components/pages/Dashboard";
 import Materials from "./components/pages/Materials";
 import Idk from "./components/pages/Idk";
+import Idk2 from "./components/pages/Idk2";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -22,6 +23,7 @@ const App = () => {
         { path: "dashboard", element: <Dashboard /> },
         { path: "materials", element: <Materials /> },
         { path: "idk", element: <Idk /> },
+        { path: "idk2", element: <Idk2 /> },
       ],
     },
   ]);

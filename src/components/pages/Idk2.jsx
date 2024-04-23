@@ -2,22 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-export default function SignIn() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
-
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-  };
-
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
-  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -27,22 +16,16 @@ export default function SignIn() {
     setPassword(e.target.value);
   };
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/register", {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          firstName,
-          lastName,
           email,
           password,
         }),
@@ -51,29 +34,17 @@ export default function SignIn() {
       if (response.ok) {
         navigate("/dashboard");
       } else {
-        console.error("Error registering user");
+        console.error("Error logging in");
       }
     } catch (error) {
-      console.error("Error registering user: " + error.message);
+      console.error("Error logging in: " + error.message);
     }
   };
 
   return (
     <Container>
-      <Title>Sign In</Title>
+      <Title>Login</Title>
       <Form onSubmit={handleSubmit}>
-        <Label>
-          First Name:
-          <Input
-            type="text"
-            value={firstName}
-            onChange={handleFirstNameChange}
-          />
-        </Label>
-        <Label>
-          Last Name:
-          <Input type="text" value={lastName} onChange={handleLastNameChange} />
-        </Label>
         <Label>
           Email:
           <Input type="email" value={email} onChange={handleEmailChange} />
@@ -86,15 +57,7 @@ export default function SignIn() {
             onChange={handlePasswordChange}
           />
         </Label>
-        <Label>
-          Confirm Password:
-          <Input
-            type="password"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
-        </Label>
-        <Button type="submit">Sign In</Button>
+        <Button type="submit">Login</Button>
       </Form>
     </Container>
   );
