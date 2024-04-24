@@ -52,7 +52,7 @@ export default function Login() {
         <Label>
           Password:
           <Input
-            type="password"
+            type="current-password"
             value={password}
             onChange={handlePasswordChange}
           />
