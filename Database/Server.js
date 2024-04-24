@@ -5,19 +5,28 @@ import cors from "cors";
 
 const app = express();
 app.use(bodyParser.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // The exact origin of the client-side application
+    credentials: true, // Allow credentials
+  })
+);
 
 // Connect to MySQL database
-const connection = mysql.createConnection({
+const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "", // Your MySQL password
+  password: "",
   database: "zoo_database",
 });
 
-app.use(cors());
+const port = 5000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 // Connect to the database
-connection.connect((err) => {
+db.connect((err) => {
   if (err) {
     console.error("Error connecting to database: " + err.stack);
     return;
@@ -31,19 +40,15 @@ app.post("/register", (req, res) => {
 
   const query =
     "INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)";
-  connection.query(
-    query,
-    [firstName, lastName, email, password],
-    (err, results) => {
-      if (err) {
-        console.error("Error registering user: " + err.stack);
-        res.status(500).send("Error registering user");
-        return;
-      }
-
-      res.status(200).send("User registered successfully");
+  db.query(query, [firstName, lastName, email, password], (err, results) => {
+    if (err) {
+      console.error("Error registering user: " + err.stack);
+      res.status(500).send("Error registering user");
+      return;
     }
-  );
+
+    res.status(200).send("User registered successfully");
+  });
 });
 
 // Login user
@@ -51,7 +56,7 @@ app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
   const query = "SELECT * FROM users WHERE email = ? AND password = ?";
-  connection.query(query, [email, password], (err, results) => {
+  db.query(query, [email, password], (err, results) => {
     if (err) {
       console.error("Error logging in: " + err.stack);
       res.status(500).send("Error logging in");
@@ -67,7 +72,8 @@ app.post("/login", (req, res) => {
   });
 });
 
-const port = 5000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+// Logout user
+app.post("/logout", (req, res) => {
+  res.clearCookie("session");
+  res.status(200).send("Logged out");
 });
