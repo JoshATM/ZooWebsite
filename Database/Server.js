@@ -69,6 +69,7 @@ app.post("/login", (req, res) => {
     }
 
     res.status(200).send("Login successful");
+    req.session.user = { firstName, lastName, email };
   });
 });
 
@@ -76,4 +77,13 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("session");
   res.status(200).send("Logged out");
+});
+
+// Get Current User
+app.get("/current-user", (req, res) => {
+  if (req.session.user) {
+    res.json(req.session.user);
+  } else {
+    res.status(401).send("No user is logged in");
+  }
 });

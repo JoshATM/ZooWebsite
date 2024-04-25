@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
-import SignOut from "./SignOut";
+// import SignOut from "./SignOut";
 
 export default function GlobalComponents() {
   return (
@@ -16,7 +16,7 @@ const DisplayAll = () => {
   return (
     <>
       <Header />
-      <SignOut />
+      {/* <SignOut /> */}
     </>
   );
 };

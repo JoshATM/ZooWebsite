@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import bcrypt from "bcryptjs";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,6 +21,9 @@ export default function Login() {
     e.preventDefault();
 
     try {
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
       const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
@@ -27,11 +31,16 @@ export default function Login() {
         },
         body: JSON.stringify({
           email,
-          password,
+          password: hashedPassword,
         }),
       });
 
       if (response.ok) {
+        // User is authenticated, save the session token
+        const { token } = await response.json();
+        // Store the token securely on the client-side, such as in a secure HTTP-only cookie or in local storage
+        // Example: document.cookie = `token=${token}; Secure; HttpOnly`;
+
         navigate("/dashboard");
       } else {
         console.error("Error logging in");
@@ -52,7 +61,7 @@ export default function Login() {
         <Label>
           Password:
           <Input
-            type="current-password"
+            type="password"
             value={password}
             onChange={handlePasswordChange}
           />
@@ -62,7 +71,6 @@ export default function Login() {
     </Container>
   );
 }
-
 const Container = styled.div`
   text-align: center;
 `;
